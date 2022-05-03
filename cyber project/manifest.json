@@ -16,5 +16,8 @@
       "128": "/images/get_started128.png"
     }
   },
-  "options_page": "options.html"
+  "options_page": "options.html",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython.js;"
+}
 }
