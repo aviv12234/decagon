@@ -4,6 +4,7 @@ import xss_detector
 from PIL import ImageTk
 from tkinter import *
 from PIL import Image
+import validators
 
 
 window = tk.Tk()
@@ -12,7 +13,7 @@ window.configure(bg="black")
 window.title("hektos")
 
 
-file="background.gif"
+file="images/background.gif"
 
 info = Image.open(file)
 
@@ -46,13 +47,30 @@ animation(count)
 
 def printInput():
     inp = inputtxt.get(1.0, "end-1c")
-    lbl.config(text = xss_detector.scan_xss(inp))
+
+    valid=validators.url(inp)
+
+    if valid:
+        secure = xss_detector.scan_xss(inp)
+        if secure == "True":
+            lbl.config(fg = "green")
+        elif secure == "False":
+            lbl.config(fg = "red")
+
+
+    else:
+        lbl.config(fg = "yellow")
+        lbl.config(text = "not a valid target")
+
+
+
+    lbl.config(text = secure)
 
 inputtxt = tk.Text(window,
                    height = 1,
                    width = 50,
                    bg = "black",
-                   fg = "red",
+                   fg = "yellow",
                    insertbackground='red'
                    )
 
@@ -61,7 +79,7 @@ inputtxt.pack()
 printButton = tk.Button(window,
                         text = "SCAN",
                         bg = "black",
-                        fg = "red",
+                        fg = "yellow",
                         highlightbackground="#000000",
                         command = printInput)
 printButton.pack()
