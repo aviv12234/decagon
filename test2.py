@@ -9,8 +9,7 @@ import validators
 
 window = tk.Tk()
 
-window.configure(bg="black")
-window.title("hektos")
+
 
 
 file="images/background.gif"
@@ -39,9 +38,6 @@ gif_label = tk.Label(window,image="",highlightthickness=0.1, highlightbackground
 gif_label.pack()
 
 
-
-
-
 animation(count)
 
 
@@ -66,6 +62,7 @@ def printInput():
 
     lbl.config(text = secure)
 
+
 inputtxt = tk.Text(window,
                    height = 1,
                    width = 50,
@@ -75,6 +72,7 @@ inputtxt = tk.Text(window,
                    )
 
 inputtxt.pack()
+
 
 printButton = tk.Button(window,
                         text = "SCAN",
@@ -88,23 +86,13 @@ lbl = tk.Label(window, text = "", bg = "black", fg = "red")
 lbl.pack()
 
 
-
-
-
-
-
-
-
+window.configure(bg="black")
+window.title("hektos")
+window.iconbitmap('images/icon.ico')
 
 
 def main():
     window.mainloop()
 
 
-
-    
-
-
-
 main()
-
