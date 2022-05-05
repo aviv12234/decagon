@@ -63,17 +63,14 @@ def scan_sql_injection(url):
     for c in "\"'":
         # add quote/double quote character to the URL
         new_url = f"{url}{c}"
-        print("[!] Trying", new_url)
         # make the HTTP request
         res = s.get(new_url)
         if is_vulnerable(res):
             # SQL Injection detected on the URL itself, 
             # no need to preceed for extracting forms and submitting them
-            print("[+] SQL Injection vulnerability detected, link:", new_url)
-            return
+            return True
     # test on HTML forms
     forms = get_all_forms(url)
-    print(f"[+] Detected {len(forms)} forms on {url}.")
     for form in forms:
         form_details = get_form_details(form)
         for c in "\"'":
@@ -98,11 +95,11 @@ def scan_sql_injection(url):
                 res = s.get(url, params=data)
             # test whether the resulting page is vulnerable
             if is_vulnerable(res):
-                print("[+] SQL Injection vulnerability detected, link:", url)
-                print("[+] Form:")
                 pprint(form_details)
-                break
+                return True
 
-if __name__ == "__main__":
-    url = "http://testphp.vulnweb.com/artists.php?artist=1"
-    scan_sql_injection(url)
+    return False
+
+#if __name__ == "__main__":
+    #url = "http://testphp.vulnweb.com/artists.php?artist=1"
+    #scan_sql_injection(url)

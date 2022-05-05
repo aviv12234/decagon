@@ -1,42 +1,18 @@
 import tkinter as tk
-import os
 import xss_detector
+import sql_injection_detector
 from PIL import ImageTk
 from tkinter import *
 from PIL import Image
+import validators
 
 
 window = tk.Tk()
 
-canvas = tk.Canvas(window, height=1000, width=1000, bg="#000000")
-canvas.pack(expand=YES, fill=BOTH)
-
-
-frame = tk.Frame(window,bg="black")
-frame.place(relwidth=0.9,relheight=0.9,relx=0, rely=0)
-
-def printInput():
-    inp = inputtxt.get(1.0, "end-1c")
-    lbl.config(text = xss_detector.scan_xss(inp))
-
-inputtxt = tk.Text(frame,
-                   height = 1,
-                   width = 50)
-
-inputtxt.pack()
-
-printButton = tk.Button(frame,
-                        text = "Print", 
-                        command = printInput)
-printButton.pack()
-
-lbl = tk.Label(frame, text = "")
-lbl.pack()
 
 
 
-
-file="background.gif"
+file="images/background.gif"
 
 info = Image.open(file)
 
@@ -53,33 +29,78 @@ def animation(count):
     im2 = im[count]
 
     gif_label.configure(image=im2)
-    count += 1
+    count += 2
     if count == frames:
         count = 0
-    frame.after(50,lambda :animation(count))
+    window.after(50,lambda :animation(count))
 
-gif_label = tk.Label(frame,image="")
+gif_label = tk.Label(window,image="",highlightthickness=0.1, highlightbackground="#00F0F0")
 gif_label.pack()
-
-
-
 
 
 animation(count)
 
 
+def printInput():
+    inp = inputtxt.get(1.0, "end-1c")
+
+    valid=validators.url(inp)
+
+    if valid:
+        xss_weakness = xss_detector.scan_xss(inp)
+        sql_weakness = sql_injection_detector.scan_sql_injection(inp)
 
 
+        if xss_weakness and sql_weakness:
+            lbl.config(text = "there is a weakness of xss and sql injection in the site",fg = "red")
+        elif xss_weakness:
+            lbl.config(text = "there is a weakness of xss in the site",fg = "red")
+        elif sql_weakness:
+            lbl.config(text = "there is a weakness of sql injection in the site",fg = "red")
+        else:
+            lbl.config(text = "the site is safe", fg = "green")
+
+        
+
+
+    else:
+        lbl.config(fg = "yellow")
+        lbl.config(text = "not a valid target")
+
+
+
+
+
+inputtxt = tk.Text(window,
+                   height = 1,
+                   width = 50,
+                   bg = "black",
+                   fg = "yellow",
+                   insertbackground='red'
+                   )
+
+inputtxt.pack()
+
+
+printButton = tk.Button(window,
+                        text = "SCAN",
+                        bg = "black",
+                        fg = "yellow",
+                        highlightbackground="#000000",
+                        command = printInput)
+printButton.pack()
+
+lbl = tk.Label(window, text = "", bg = "black", fg = "red")
+lbl.pack()
+
+
+window.configure(bg="black")
+window.title("hektos")
+window.iconbitmap('images/icon.ico')
 
 
 def main():
     window.mainloop()
 
 
-
-    
-
-
-
 main()
-

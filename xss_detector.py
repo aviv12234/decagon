@@ -83,7 +83,7 @@ def scan_xss(url):
             #pprint(form_details)
             is_vulnerable = True
             # won't break because we want to print available vulnerable forms
-    return str(is_vulnerable)
+    return is_vulnerable
 
 
 #if __name__ == "__main__":
