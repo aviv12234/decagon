@@ -1,6 +1,2 @@
 Url, Xss, Sql_injection, 
-http://testphp.vulnweb.com/artists.php?artist=1, True, True, 
 https://xss-game.appspot.com/level1/frame, True, False, 
-https://peps.python.org/pep-0008/, False, False, 
-https://www.codegrepper.com/code-examples/python/how+to+open+chrome+with+a+specific+url+with+python, False, False, 
-https://stackoverflow.com/questions/22445217/python-webbrowser-open-to-open-chrome-browser, False, False, 
