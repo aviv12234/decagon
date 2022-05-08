@@ -6,6 +6,8 @@ from tkinter import *
 from PIL import Image
 import validators
 import csv
+import webbrowser
+
 
 
 
@@ -18,7 +20,7 @@ gif_file="images/background.gif"
 
 info = Image.open(gif_file)
 
-header = ['Url', 'Sql_injection', 'Xss']
+header = ['Url', 'Xss', 'Sql_injection']
 
 
 frames = info.n_frames  # gives total number of frames that gif contains
@@ -42,19 +44,43 @@ gif_label.pack()
 
 animation(count)
 
-def has_header(filename):
-    with open(filename) as f:
-        
-        txt_file = f.read().split(',')
+def open_url(url):
+    chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
 
+    webbrowser.get(chrome_path).open(url)
+
+
+def has_header(filename):
+    with open(filename) as file_obj:
+        
+        txt_file = file_obj.read().split(',')
 
         for tab in range(len(header)):
             if txt_file[tab].strip() != header[tab]:
+
                 return False
     return True
         
+def string_to_bool(statement):
+    if statement == "True":
+        return True
+    return False
 
         
+
+def findUrl(filename ,url):
+    with open(filename) as file_obj:
+
+        reader_obj = csv.reader(file_obj)
+
+        for row in reader_obj:
+            if row[0] == url:
+                return string_to_bool(row[1].strip()), string_to_bool(row[2].strip())
+
+    return False
+
+    
+
 
 
 
@@ -68,11 +94,38 @@ def printInput():
 
 
     if valid:
-        xss_weakness = xss_detector.scan_xss(inp)
-        sql_weakness = sql_injection_detector.scan_sql_injection(inp)
+
+        try: 
+            xss_weakness, sql_weakness = findUrl(data_file, inp)
+        except:
+            sql_weakness = sql_injection_detector.scan_sql_injection(inp)
+            xss_weakness = xss_detector.scan_xss(inp)
+
+
+
+            data_add = [inp, xss_detector.scan_xss(inp), sql_injection_detector.scan_sql_injection(inp)]
+            header = ['Url', 'Xss', 'Sql_injection']
+
+            data = open(data_file, 'a', newline="")
+
+
+            if not has_header(data_file):
+                for header in header:
+                    data.write(str(header)+', ')
+
+
+
+
+            data.write('\n')
+            for variable in data_add:
+                data.write(str(variable)+', ')
+
+            data.close()
+
 
 
         if xss_weakness and sql_weakness:
+
             lbl.config(text = "there is a weakness of xss and sql injection in the site",fg = "red")
         elif xss_weakness:
             lbl.config(text = "there is a weakness of xss in the site",fg = "red")
@@ -80,9 +133,12 @@ def printInput():
             lbl.config(text = "there is a weakness of sql injection in the site",fg = "red")
         else:
             lbl.config(text = "the site is safe", fg = "green")
+            open_url(inp)
+
+
 
         
-
+        
 
 
     else:
@@ -91,24 +147,7 @@ def printInput():
 
 
     
-    data_add = [inp, xss_detector.scan_xss(inp), sql_injection_detector.scan_sql_injection(inp)]
-    header = ['Url', 'Sql_injection', 'Xss']
-
-    data = open(data_file, 'a', newline="")
-
-
-    if not has_header(data_file):
-        for header in header:
-            data.write(str(header)+', ')
-
-
-
-
-    data.write('\n')
-    for variable in data_add:
-        data.write(str(variable)+', ')
-
-    data.close()
+    
 
 
 

@@ -11,6 +11,7 @@ def get_all_forms(url):
     return soup.find_all("form")
 
 
+
 def get_form_details(form):
     """
     This function extracts all possible useful information about an HTML `form`
