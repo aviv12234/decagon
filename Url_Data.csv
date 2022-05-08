@@ -1,4 +1,3 @@
 Url, Sql_injection, Xss, 
 https://xss-game.appspot.com/level1/frame, True, False, 
 http://testphp.vulnweb.com/artists.php?artist=1, True, True, 
-https://stackoverflow.com/questions/30685308/how-do-i-change-the-text-size-in-a-label-widget-python-tkinter, False, False, 
