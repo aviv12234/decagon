@@ -1,3 +1,4 @@
 Date, Url, Xss, Sql_injection, 
 2022-05-09 15:57:40.918114, https://xss-game.appspot.com/level1/frame, True, False, 
 2022-05-09 15:57:48.875132, http://testphp.vulnweb.com/artists.php?artist=1, True, True, 
+k

@@ -2,4 +2,4 @@
 __pycache__/
 
 # Data for local app
-Url_Data/
+/Url_data.csv
