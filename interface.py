@@ -20,7 +20,7 @@ gif_file="images/background.gif"
 
 info = Image.open(gif_file)
 
-header = ['Url', 'Xss', 'Sql_injection']
+header = ['Date','Url','Xss','Sql_injection']
 
 
 frames = info.n_frames  # gives total number of frames that gif contains
@@ -74,8 +74,8 @@ def findUrl(filename ,url):
         reader_obj = csv.reader(file_obj)
 
         for row in reader_obj:
-            if row[0] == url:
-                return string_to_bool(row[1].strip()), string_to_bool(row[2].strip())
+            if row[1].strip() == url:
+                return string_to_bool(row[2].strip()), string_to_bool(row[3].strip())
 
     return False
 
@@ -103,8 +103,8 @@ def printInput():
 
 
 
-            data_add = [inp, xss_detector.scan_xss(inp), sql_injection_detector.scan_sql_injection(inp)]
-            header = ['Url', 'Xss', 'Sql_injection']
+            data_add = [str(datetime.datetime.now()),inp, xss_detector.scan_xss(inp), sql_injection_detector.scan_sql_injection(inp)]
+            header = ['Date','Url','Xss','Sql_injection']
 
             data = open(data_file, 'a', newline="")
 
