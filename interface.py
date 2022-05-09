@@ -1,6 +1,5 @@
 import tkinter as tk
-import xss_detector
-import sql_injection_detector
+from detectors import scan_xss, scan_sql_injection
 from PIL import ImageTk
 from tkinter import *
 from PIL import Image
@@ -8,6 +7,7 @@ import validators
 import csv
 import webbrowser
 import datetime
+import utils
 
 
 
@@ -98,12 +98,11 @@ def printInput():
         try: 
             xss_weakness, sql_weakness = findUrl(data_file, inp)
         except:
-            sql_weakness = sql_injection_detector.scan_sql_injection(inp)
-            xss_weakness = xss_detector.scan_xss(inp)
+            sql_weakness = scan_sql_injection(inp)
+            xss_weakness = scan_xss(inp)
 
 
-
-            data_add = [str(datetime.datetime.now()),inp, xss_detector.scan_xss(inp), sql_injection_detector.scan_sql_injection(inp)]
+            data_add = [str(datetime.datetime.now()),inp, scan_xss(inp), scan_sql_injection(inp)]
             header = ['Date','Url','Xss','Sql_injection']
 
             data = open(data_file, 'a', newline="")
