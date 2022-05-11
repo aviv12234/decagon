@@ -27,15 +27,6 @@ def find_url(filename ,url):
     return False
 
 
-def need_update(filename):
-    with open(filename) as file_obj:
 
-        reader_obj = csv.reader(file_obj)
-        updates = []
-
-        for row in reader_obj:
-            updates.append(row[0] < datetime.now() - timedelta(hours=2))
-
-    return updates
 
 

@@ -86,7 +86,3 @@ def scan_xss(url):
             # won't break because we want to print available vulnerable forms
     return is_vulnerable
 
-
-#if __name__ == "__main__":
-    #url = "https://xss-game.appspot.com/level1/frame"
-    #print(scan_xss(url))
