@@ -1,54 +1,47 @@
 import tkinter as tk
 from detectors import scan_xss, scan_sql_injection
-from PIL import ImageTk
 from tkinter import *
 from PIL import Image
 import validators
-import csv
-import webbrowser
 import datetime
-import utils
+import utils.general
 
 
 
 window = tk.Tk()
 
-data_file = 'Url_Data.csv'
 
+
+gif_label = tk.Label(window,image="",highlightthickness=0.1, highlightbackground="#00F0F0")
+gif_label.pack()
 
 gif_file="images/background.gif"
 
 info = Image.open(gif_file)
+frames = info.n_frames
+
+images_list = [tk.PhotoImage(file=gif_file,format=f"gif -index {i}") for i in range(frames)]
 
 header = ['Date','Url','Xss','Sql_injection']
 
-
-frames = info.n_frames  # gives total number of frames that gif contains
-
-# creating list of PhotoImage objects for each frames
-im = [tk.PhotoImage(file=gif_file,format=f"gif -index {i}") for i in range(frames)]
-
 count = 0
-def animation(count):
-    im2 = im[count]
 
-    gif_label.configure(image=im2)
+
+def animation(count):
+    image = images_list[count]
+
+    gif_label.configure(image=image)
     count += 2
     if count == frames:
         count = 0
     window.after(50,lambda :animation(count))
 
-gif_label = tk.Label(window,image="",highlightthickness=0.1, highlightbackground="#00F0F0")
-gif_label.pack()
-
-
 animation(count)
 
-def open_url(url):
-    chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
 
-    webbrowser.get(chrome_path).open(url)
 
+
+data_file = 'Url_Data.csv'
 
 def has_header(filename):
     with open(filename) as file_obj:
@@ -61,29 +54,6 @@ def has_header(filename):
                 return False
     return True
         
-def string_to_bool(statement):
-    if statement == "True":
-        return True
-    return False
-
-        
-
-def findUrl(filename ,url):
-    with open(filename) as file_obj:
-
-        reader_obj = csv.reader(file_obj)
-
-        for row in reader_obj:
-            if row[1].strip() == url:
-                return string_to_bool(row[2].strip()), string_to_bool(row[3].strip())
-
-    return False
-
-    
-
-
-
-
 
 
 def printInput():
@@ -92,11 +62,10 @@ def printInput():
     valid=validators.url(inp)
 
 
-
     if valid:
 
         try: 
-            xss_weakness, sql_weakness = findUrl(data_file, inp)
+            xss_weakness, sql_weakness = utils.general.find_url(data_file, inp)
         except:
             sql_weakness = scan_sql_injection(inp)
             xss_weakness = scan_xss(inp)
@@ -111,7 +80,6 @@ def printInput():
             if not has_header(data_file):
                 for header in header:
                     data.write(str(header)+', ')
-
 
 
 
@@ -132,21 +100,10 @@ def printInput():
             lbl.config(text = "there is a weakness of sql injection in the site",fg = "red")
         else:
             lbl.config(text = "the site is safe", fg = "green")
-            open_url(inp)
-
-
-
-        
-        
-
+            utils.general.open_url(inp)
 
     else:
-        lbl.config(fg = "yellow")
-        lbl.config(text = "not a valid target")
-
-
-    
-    
+        lbl.config(text = "not a valid target", fg = "yellow")
 
 
 
@@ -167,10 +124,13 @@ printButton = tk.Button(window,
                         fg = "yellow",
                         highlightbackground="#000000",
                         command = printInput)
+                        
 printButton.pack()
+
 
 lbl = tk.Label(window,  text = "", bg = "black", fg = "red")
 lbl.pack()
+
 
 
 window.configure(bg="black")
@@ -178,8 +138,5 @@ window.title("hektos")
 window.iconbitmap('images/icon.ico')
 
 
-def main():
-    window.mainloop()
 
-
-main()
+window.mainloop()

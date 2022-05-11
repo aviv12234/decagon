@@ -1,3 +1,4 @@
+import tkinter as tk
 
 
 def animation(window, count, gif_label, num_frames, photo_list):

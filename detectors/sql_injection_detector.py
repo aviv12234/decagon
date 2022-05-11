@@ -38,6 +38,7 @@ def get_form_details(form):
     details["inputs"] = inputs
     return details
 
+
 def is_vulnerable(response):
     """A simple boolean function that determines whether a page 
     is SQL Injection vulnerable from its `response`"""
