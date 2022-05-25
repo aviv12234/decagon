@@ -11,7 +11,6 @@ def get_all_forms(url):
     return soup.find_all("form")
 
 
-
 def get_form_details(form):
     """
     This function extracts all possible useful information about an HTML `form`
@@ -81,8 +80,7 @@ def scan_xss(url):
         form_details = get_form_details(form)
         content = submit_form(form_details, url, js_script).content.decode()
         if js_script in content:
-            #pprint(form_details)
+            # pprint(form_details)
             is_vulnerable = True
             # won't break because we want to print available vulnerable forms
     return is_vulnerable
-

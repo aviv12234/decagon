@@ -7,6 +7,7 @@ from pprint import pprint
 s = requests.Session()
 s.headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36"
 
+
 def get_all_forms(url):
     """Given a `url`, it returns all forms from the HTML content"""
     soup = bs(s.get(url).content, "html.parser")
@@ -31,7 +32,8 @@ def get_form_details(form):
         input_type = input_tag.attrs.get("type", "text")
         input_name = input_tag.attrs.get("name")
         input_value = input_tag.attrs.get("value", "")
-        inputs.append({"type": input_type, "name": input_name, "value": input_value})
+        inputs.append(
+            {"type": input_type, "name": input_name, "value": input_value})
     # put everything to the resulting dictionary
     details["action"] = action
     details["method"] = method
@@ -67,7 +69,7 @@ def scan_sql_injection(url):
         # make the HTTP request
         res = s.get(new_url)
         if is_vulnerable(res):
-            # SQL Injection detected on the URL itself, 
+            # SQL Injection detected on the URL itself,
             # no need to preceed for extracting forms and submitting them
             return True
     # test on HTML forms
@@ -100,7 +102,3 @@ def scan_sql_injection(url):
                 return True
 
     return False
-
-#if __name__ == "__main__":
-    #url = "http://testphp.vulnweb.com/artists.php?artist=1"
-    #scan_sql_injection(url)

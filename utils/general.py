@@ -15,7 +15,7 @@ def open_url(url):
     webbrowser.get(chrome_path).open(url)
 
 
-def find_url(filename ,url):
+def find_url(filename, url):
     with open(filename) as file_obj:
 
         reader_obj = csv.reader(file_obj)
@@ -25,8 +25,3 @@ def find_url(filename ,url):
                 return string_to_bool(row[2].strip()), string_to_bool(row[3].strip())
 
     return False
-
-
-
-
-
