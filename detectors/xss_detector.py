@@ -1,8 +1,6 @@
 import requests
-from pprint import pprint
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
-from bs4 import BeautifulSoup
 
 
 def get_all_forms(url):
