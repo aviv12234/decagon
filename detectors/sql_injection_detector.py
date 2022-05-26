@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
-from pprint import pprint
 
 # initialize an HTTP session & set the browser
 s = requests.Session()
@@ -98,7 +97,6 @@ def scan_sql_injection(url):
                 res = s.get(url, params=data)
             # test whether the resulting page is vulnerable
             if is_vulnerable(res):
-                pprint(form_details)
                 return True
 
     return False
