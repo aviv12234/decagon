@@ -1,6 +1,5 @@
 import webbrowser
 import csv
-from datetime import datetime, timedelta
 
 
 def string_to_bool(statement):

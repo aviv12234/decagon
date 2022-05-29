@@ -1,6 +1,5 @@
 import tkinter as tk
 from detectors import scan_xss, scan_sql_injection
-from tkinter import *
 from PIL import Image
 import validators
 import datetime
@@ -72,22 +71,22 @@ def printInput():
                         scan_xss(inp), scan_sql_injection(inp)]
             header = ['Date', 'Url', 'Xss', 'Sql_injection']
 
-            data = open(data_file, 'a', newline="")
+            data_base = open(data_file, 'a', newline="")
 
             if not has_header(data_file):
                 for header in header:
-                    data.write(str(header)+', ')
+                    data_base.write(str(header)+', ')
 
-            data.write('\n')
+            data_base.write('\n')
             for variable in data_add:
-                data.write(str(variable)+', ')
+                data_base.write(str(variable)+', ')
 
-            data.close()
+            data_base.close()
 
         if xss_weakness and sql_weakness:
 
             lbl.config(
-                text="there is a weakness of xss and sql injection in the site", fg="red")
+                text="there are weaknesses of xss and sql injection in the site", fg="red")
         elif xss_weakness:
             lbl.config(text="there is a weakness of xss in the site", fg="red")
         elif sql_weakness:

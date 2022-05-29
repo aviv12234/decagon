@@ -71,14 +71,11 @@ def scan_xss(url):
     # get all the forms from the URL
     forms = get_all_forms(url)
     js_script = "<Script>alert('hi')</scripT>"
-    # returning value
-    is_vulnerable = False
+
     # iterate over all forms
     for form in forms:
         form_details = get_form_details(form)
         content = submit_form(form_details, url, js_script).content.decode()
         if js_script in content:
-            # pprint(form_details)
-            is_vulnerable = True
-            # won't break because we want to print available vulnerable forms
-    return is_vulnerable
+            return True
+    return False
